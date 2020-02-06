@@ -1,0 +1,95 @@
+class Calculator(object):
+  def evaluate(self, string):
+    base = string
+    base = base.replace(' ', '')
+    outp = base
+    
+    def str_to_source(inp_string):
+        begin = 0
+        end = 1
+        operands = []
+        operators = []
+        while True:
+            if end >= len(inp_string):
+                operands.append(float(inp_string[begin:end]))
+                break
+    
+            if '+' in inp_string[begin:end + 1]:
+                operators.append(inp_string[end])
+                operands.append(float(inp_string[begin:end]))
+                begin = end + 1
+                end = end + 2
+                continue
+    
+            elif '-' in inp_string[begin:end + 1]:
+                operators.append(inp_string[end])
+                operands.append(float(inp_string[begin:end]))
+                begin = end + 1
+                end = end + 2
+                continue
+            elif '/' in inp_string[begin:end + 1]:
+                operators.append(inp_string[end])
+                operands.append(float(inp_string[begin:end]))
+                begin = end + 1
+                end = end + 2
+                continue
+            elif '*' in inp_string[begin:end + 1]:
+                operators.append(inp_string[end])
+                operands.append(float(inp_string[begin:end]))
+                begin = end + 1
+                end = end + 2
+                continue
+    
+            end = end + 1
+    
+        for sign in operators[:]:
+            if sign == '*':
+                operands[operators.index('*')] *= operands[operators.index('*') + 1]
+                del operands[operators.index('*') + 1]
+                del operators[operators.index(sign)]
+            if sign == '/':
+                operands[operators.index('/')] /= operands[operators.index('/') + 1]
+                del operands[operators.index('/') + 1]
+                del operators[operators.index(sign)]
+    
+        i = 1
+        ans = operands[0]
+    
+        for sign in operators:
+            if sign == '+':
+                ans += operands[i]
+                i += 1
+            if sign == '-':
+                ans -= operands[i]
+                i += 1
+        return ans
+    
+    
+    if '(' in base:
+        mass_op = []
+        mass_cl = []
+        i = 0
+        for a in base:
+            if a == "(":
+                mass_op.append(i)
+            elif a == ")":
+                mass_cl.append(i)
+            i += 1
+    
+        op = -1
+        cl = 0
+        while True:
+            ind_begin = base.rfind('(')
+            ind_end = base.find(')', ind_begin)
+    
+            print(base[ind_begin + 1:ind_end])
+            base = base[0:ind_begin] + str(str_to_source(base[ind_begin + 1:ind_end])) + base[ind_end + 1:len(base)]
+            print(base)
+    
+            cl += 1
+            if cl >= len(mass_cl):
+                break
+                
+    base = str_to_source(base)
+
+    return base
